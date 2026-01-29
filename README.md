@@ -52,6 +52,7 @@ O **Proxy Reverso** atua como camada de proteção e controle, enquanto o **Apac
 
 ## 🚀 Tecnologias Utilizadas
 
+- Uso do dominio
 - Apache Guacamole
 - Nginx (Proxy Reverso)
 - Docker / Docker Compose
@@ -76,6 +77,10 @@ O **Proxy Reverso** atua como camada de proteção e controle, enquanto o **Apac
 
 Contribuições são bem-vindas.
 
+---
+## 📄 Exemplo
+www.dominio.com.br/guacamole
+/guacamole > redirecionado via proxy reverso
 ---
 
 ## 📄 Licença
