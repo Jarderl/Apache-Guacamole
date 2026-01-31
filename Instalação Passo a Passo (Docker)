@@ -1,4 +1,4 @@
-🧱 Pré-requisitos
+1 - Pré-requisitos
 
 Servidor Linux (Ubuntu 20.04+ recomendado)
 
@@ -13,11 +13,11 @@ Verifique:
 docker --version
 docker-compose --version
 
-📁 Estrutura do Projeto
+2 - Estrutura do Projeto
 mkdir guacamole
 cd guacamole
 
-🧩 Criando o docker-compose.yml
+3 - Criando o docker-compose.yml
 
 Crie o arquivo:
 
@@ -66,19 +66,19 @@ volumes:
   dbdata:
 
 
-💡 Dica: Substitua as senhas por questão de segurança.
+OBS: Dica: Substitua as senhas por questão de segurança.
 
-🗄️ Inicializando o Banco de Dados
-1️⃣ Gere o script SQL oficial
+4 - Inicializando o Banco de Dados
+4.1 - Gere o script SQL oficial
 docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
 
-2️⃣ Suba apenas o MySQL
+4.2 - Suba apenas o MySQL
 docker-compose up -d mysql
 
-3️⃣ Importe o banco
+4.3️ - Importe o banco
 docker exec -i guac-mysql mysql -u root -prootpass guacamole_db < initdb.sql
 
-🚀 Subindo tudo
+5 - Subindo tudo
 docker-compose up -d
 
 
@@ -86,7 +86,7 @@ Verifique:
 
 docker ps
 
-🌐 Acesso Web
+6 - Acesso Web
 
 No navegador:
 
@@ -99,7 +99,7 @@ Usuário: guacadmin
 Senha: guacadmin
 
 
-🖥️ Criando uma Conexão (RDP / SSH)
+7 - Criando uma Conexão (RDP / SSH)
 Exemplo: SSH
 
 Settings → Connections → New Connection
@@ -122,8 +122,8 @@ Enable Drive Redirection (se quiser copiar arquivos)
 
 Enable Clipboard
 
-🔒 Hardening e Segurança (MUITO IMPORTANTE)
-✅ 1. Coloque atrás de um Proxy Reverso (Nginx)
+8 - Hardening e Segurança (MUITO IMPORTANTE)
+8.1 - Coloque atrás de um Proxy Reverso (Nginx)
 
 HTTPS obrigatório
 
@@ -131,18 +131,18 @@ Let’s Encrypt
 
 Bloqueia acesso direto à porta 8080
 
-✅ 2. Autenticação Forte
+8.2 - Autenticação Forte
 
 Integração com LDAP / Active Directory
 
 2FA (TOTP)
 
-✅ 3. Firewall
+4.3 - Firewall
 ufw allow 80
 ufw allow 443
 ufw deny 8080
 
-✅ 4. Logs e Auditoria
+4.4 - Logs e Auditoria
 
 Guacamole registra:
 
@@ -154,7 +154,7 @@ Sessões
 
 Ideal para ambiente corporativo ou investigação
 
-🧠 Arquitetura Recomendada (Produção)
+OBS: Arquitetura Recomendada (Produção)
 Internet
    ↓
 Nginx (HTTPS + WAF)
