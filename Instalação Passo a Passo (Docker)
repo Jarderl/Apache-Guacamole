@@ -1,0 +1,166 @@
+🧱 Pré-requisitos
+
+Servidor Linux (Ubuntu 20.04+ recomendado)
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y docker.io docker-compose
+sudo systemctl enable docker
+sudo systemctl start docker
+
+
+Verifique:
+
+docker --version
+docker-compose --version
+
+📁 Estrutura do Projeto
+mkdir guacamole
+cd guacamole
+
+🧩 Criando o docker-compose.yml
+
+Crie o arquivo:
+
+nano docker-compose.yml
+
+
+Cole exatamente isso 👇
+
+version: '3'
+
+services:
+  guacd:
+    image: guacamole/guacd
+    container_name: guacd
+    restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: guac-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacuser
+      MYSQL_PASSWORD: guacpass
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  guacamole:
+    image: guacamole/guacamole
+    container_name: guacamole
+    restart: always
+    depends_on:
+      - guacd
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      GUACD_HOSTNAME: guacd
+      MYSQL_HOSTNAME: mysql
+      MYSQL_DATABASE: guacamole_db
+      MYSQL_USER: guacuser
+      MYSQL_PASSWORD: guacpass
+
+volumes:
+  dbdata:
+
+
+💡 Dica: Substitua as senhas por questão de segurança.
+
+🗄️ Inicializando o Banco de Dados
+1️⃣ Gere o script SQL oficial
+docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --mysql > initdb.sql
+
+2️⃣ Suba apenas o MySQL
+docker-compose up -d mysql
+
+3️⃣ Importe o banco
+docker exec -i guac-mysql mysql -u root -prootpass guacamole_db < initdb.sql
+
+🚀 Subindo tudo
+docker-compose up -d
+
+
+Verifique:
+
+docker ps
+
+🌐 Acesso Web
+
+No navegador:
+
+http://IP_DO_SERVIDOR:8080/guacamole
+
+
+Credenciais padrão:
+
+Usuário: guacadmin
+Senha: guacadmin
+
+
+🖥️ Criando uma Conexão (RDP / SSH)
+Exemplo: SSH
+
+Settings → Connections → New Connection
+
+Protocol: SSH
+
+Hostname: 192.168.1.10
+
+Port: 22
+
+Username / Password
+
+Save
+
+Exemplo: RDP
+
+Protocol: RDP
+
+Enable Drive Redirection (se quiser copiar arquivos)
+
+Enable Clipboard
+
+🔒 Hardening e Segurança (MUITO IMPORTANTE)
+✅ 1. Coloque atrás de um Proxy Reverso (Nginx)
+
+HTTPS obrigatório
+
+Let’s Encrypt
+
+Bloqueia acesso direto à porta 8080
+
+✅ 2. Autenticação Forte
+
+Integração com LDAP / Active Directory
+
+2FA (TOTP)
+
+✅ 3. Firewall
+ufw allow 80
+ufw allow 443
+ufw deny 8080
+
+✅ 4. Logs e Auditoria
+
+Guacamole registra:
+
+Login
+
+IP
+
+Sessões
+
+Ideal para ambiente corporativo ou investigação
+
+🧠 Arquitetura Recomendada (Produção)
+Internet
+   ↓
+Nginx (HTTPS + WAF)
+   ↓
+Apache Guacamole
+   ↓
+guacd
+   ↓
+Servidores internos (RDP / SSH)
