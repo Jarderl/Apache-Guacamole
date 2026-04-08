@@ -79,8 +79,8 @@ Contribuições são bem-vindas.
 
 ---
 ##  Exemplo
-- (www.dominio.com.br/guacamole)
-- /guacamole > redirecionado via proxy reverso
+- (www.dominio.com.br/teste)
+- /teste > redirecionado via proxy reverso
 ---
 
 ##  Licença
