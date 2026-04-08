@@ -80,7 +80,7 @@ Contribuições são bem-vindas.
 ---
 ##  Exemplo
 - (www.dominio.com.br/teste)
-- /teste > redirecionado via proxy reverso
+- /teste > Custom locations > redirecionado via proxy reverso
 ---
 
 ##  Licença
